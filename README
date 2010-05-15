@@ -1,0 +1,85 @@
+----------------------------------------------------------------------------
+                               License
+----------------------------------------------------------------------------
+  vhost-backer is a lightweight vhost and wordpress backup script.
+  Copyright (C) 2010  Jason Giedymin
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+----------------------------------------------------------------------------
+                           Description
+----------------------------------------------------------------------------
+ 
+            File: vhost-backer.sh
+
+Application Name: vhost-backer
+
+          Author: Jason Giedymin, jason dot giedymin -{a, t}- g mail dotcom
+
+      Script URL: http://amuxbit.com
+
+      Ping Backs: Writing about vhost-backer? Send me an email and let me
+                  know.
+
+         Version: v0.8.0 - Initial Cleanup.
+
+   License Notes: If you find yourself using using, modifying, selling
+                  this script please give proper dedication to your users
+                  that this script was created and maintained by me.  It's
+                  only right, and provides me and others motivation,
+                  contributes to the general stability and life of this
+                  project, and serves as a basepoint.
+
+     Description: vhost-backer is a lightweight vhost and wordpress backup
+                  script. This script is best used for storing long term
+                  snapshots of large webserver site implementations.
+                  Think datawarehouse, when dealing with these backups.
+                  The script has the ability to read WordPress config files
+                  and will back those databases up along with the core
+                  files.  This script is lagging behind our own deployment
+                  at amuxbit, and it is the hope that in time the FOSS
+                  version will be up to date.  Some goals for making this
+                  project FOSS was to enhance stability _and_ readability.
+                  No doubt, there are many different implementations to
+                  backing up data and wordpress, this is just one.
+                  Enjoy.
+
+       EC2 Notes: If your running on EC2 you may have issues with a live and
+                  heavy trafficked site. Future updates will be better
+                  suited for EC2 duty. Stay tuned!
+
+            ToDo: backup backout,
+                  expanded function documentation,
+                  EC2 compatability,
+                  simple user mode,
+                  encryption keys
+                  switchable modes,
+                  interactive mode,
+                  accept command line switches
+
+ This script works under the following recommended vhost structure (sample):
+ / (root)
+ |-var
+    |-www
+       |-vhosts
+           |-htdocs (things like your WordPress install, etc...
+           |-admin (a special admin site perhaps)
+           |-logs (holds your logs)
+           |-keys (where your might store your SSL keys)
+           |-backup (a place to store your backup files)
+               |-htdocs.tar.bz2 (a backup file)
+               |-admin.tar.bz2 (a backup file)
+               |-scripts.tar.bz2 (a backup file)
+           |-scripts (maybe you have special scripts JUST for this vhost)
+
