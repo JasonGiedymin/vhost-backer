@@ -80,9 +80,10 @@
 #           |-logs (holds your logs)
 #           |-keys (where your might store your SSL keys)
 #           |-backup (a place to store your backup files)
-#               |-htdocs.tar.bz2 (a backup file)
-#               |-admin.tar.bz2 (a backup file)
-#               |-scripts.tar.bz2 (a backup file)
+#               |-Date Time Stamp (Time stamped directories)
+#                  |-htdocs.tar.bz2 (a backup file)
+#                  |-admin.tar.bz2 (a backup file)
+#                  |-scripts.tar.bz2 (a backup file)
 #           |-scripts (maybe you have special scripts JUST for this vhost)
 #
 #
