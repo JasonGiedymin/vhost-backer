@@ -64,9 +64,7 @@
 #             ToDo: backup backout,
 #                   expanded function documentation,
 #                   EC2 compatability,
-#                   simple user mode,
 #                   encryption keys
-#                   switchable modes,
 #                   interactive mode,
 #                   accept command line switches
 #
