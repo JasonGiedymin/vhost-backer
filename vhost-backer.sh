@@ -34,7 +34,7 @@
 #       Ping Backs: Writing about vhost-backer? Send me an email and let me
 #                   know.
 #
-#          Version: v0.9.0 - Initial Cleanup.
+#          Version: v0.9.1 - Initial Cleanup.
 #
 #    License Notes: If you find yourself using using, modifying, selling
 #                   this script please give proper dedication to your users
@@ -80,10 +80,9 @@
 #           |-logs (holds your logs)
 #           |-keys (where your might store your SSL keys)
 #           |-backup (a place to store your backup files)
-#               |-Date Time Stamp (Time stamped directories)
-#                  |-htdocs.tar.bz2 (a backup file)
-#                  |-admin.tar.bz2 (a backup file)
-#                  |-scripts.tar.bz2 (a backup file)
+#               |-htdocs.tar.bz2 (a backup file)
+#               |-admin.tar.bz2 (a backup file)
+#               |-scripts.tar.bz2 (a backup file)
 #           |-scripts (maybe you have special scripts JUST for this vhost)
 #
 #
@@ -107,6 +106,8 @@ DATE="$(date +%Y%m%d-%H:%M:%S)";
 #
 # Debug, 1=true, 0=false.  You may also use the constants above.
 # Default: DEBUG=$FALSE (is equivalent to) DEBUG=0
+# NOTE!!!  Debug mode can be dangerous, it will show your password on screen
+#          in clear text!
 DEBUG=0;
 
 # Sets the application mode to simple single host, or enhanced vhost mode.
@@ -263,17 +264,19 @@ function backupWordPressDB() {
         getCFGValue "DB_NAME" $wordpressLocation/$WORDPRESS_CFG;
         local dbName=$cfgReturnValue;
 
-        #local execDump="$($MYSQLDUMP_BIN -u $dbUser -h $dbHost --password=$dbPass $dbName | bzip2 -9 > $backupLocation/backup_db.sql.tar.bz2)";
+        logIt debug "Running mysqldump [$MYSQLDUMP_BIN -u $dbUser -h $dbHost --password=$dbPass $dbName > $backupLocation/backup_db.sql]...";
 
-
-        $MYSQLDUMP_BIN -u $dbUser -h $dbHost --password=$dbPass $dbName > $backupLocation/backup_db.sql.tar.bz2
+        $MYSQLDUMP_BIN -u $dbUser -h $dbHost --password=$dbPass $dbName > $backupLocation/backup_db.sql
 
         if [ 0 -ne $? ]; then
             logIt error "$MYSQLDUMP_BIN error, read output or logs.";
             exit 1;
         else
             cd $backupLocation
-            tar -cvjf backup_db.sql.tar.bz2 backup_db.sql
+
+            [[ $DEBUG -eq $TRUE ]] && tar -cvjf backup_db.sql.tar.bz2 backup_db.sql
+            [[ $DEBUG -eq $FALSE ]] && tar -cjf backup_db.sql.tar.bz2 backup_db.sql
+
             claimFile $backupLocation/backup_db.sql.tar.bz2
             rm $backupLocation/backup_db.sql
         fi
@@ -293,9 +296,12 @@ function backupCompressThis() {
             claimFile $backupLocation
         fi
 
-        logIt info "Backing up [$currentVhost/$site] to [$backupLocation/$site.tar.bz2]";
+        logIt info "Backing up [$currentVhost/$site] to [$backupLocation/$site.tar.bz2], be patient...";
         cd $currentVhost
-        tar -cvjf $site.tar.bz2 $site
+
+        [[ $DEBUG -eq $TRUE ]] && tar -cvjf $site.tar.bz2 $site
+        [[ $DEBUG -eq $FALSE ]] && tar -cjf $site.tar.bz2 $site
+
         claimFile $currentVhost/$site.tar.bz2
         mv $currentVhost/$site.tar.bz2 $backupLocation
 }
