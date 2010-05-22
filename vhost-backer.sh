@@ -34,7 +34,7 @@
 #       Ping Backs: Writing about vhost-backer? Send me an email and let me
 #                   know.
 #
-#          Version: v0.8.0 - Initial Cleanup.
+#          Version: v0.9.0 - Initial Cleanup.
 #
 #    License Notes: If you find yourself using using, modifying, selling
 #                   this script please give proper dedication to your users
@@ -107,7 +107,7 @@ DATE="$(date +%Y%m%d-%H:%M:%S)";
 #
 # Debug, 1=true, 0=false.  You may also use the constants above.
 # Default: DEBUG=$FALSE (is equivalent to) DEBUG=0
-DEBUG=1;
+DEBUG=0;
 
 # Sets the application mode to simple single host, or enhanced vhost mode.
 # Default: APP_MODE=$VHOST_MODE (is equivalent to) APP_MODE=0
@@ -272,7 +272,8 @@ function backupWordPressDB() {
             logIt error "$MYSQLDUMP_BIN error, read output or logs.";
             exit 1;
         else
-            tar -cvjf $backupLocation/backup_db.sql $backupLocation/backup_db.sql.tar.bz2
+            cd $backupLocation
+            tar -cvjf backup_db.sql.tar.bz2 backup_db.sql
             claimFile $backupLocation/backup_db.sql.tar.bz2
             rm $backupLocation/backup_db.sql
         fi
@@ -287,12 +288,16 @@ function backupCompressThis() {
         local site=$2;
         local backupLocation=$3/$DATE;
 
-        if [ ! -d $backupLocation/$DATE ]; then
+        if [ ! -d $backupLocation ]; then
             mkdir -p $backupLocation
             claimFile $backupLocation
         fi
 
         logIt info "Backing up [$currentVhost/$site] to [$backupLocation/$site.tar.bz2]";
+        cd $currentVhost
+        tar -cvjf $site.tar.bz2 $site
+        claimFile $currentVhost/$site.tar.bz2
+        mv $currentVhost/$site.tar.bz2 $backupLocation
 }
 
 # Backup the subdirs.
